@@ -180,6 +180,8 @@
         self.isSynthesizing = NO;
         if (success) {
             [AWECAUtils showToast:error ?: @"合成成功"];
+            // 先收键盘再关页面，不然键盘会残留
+            [self.view endEditing:YES];
             [self dismissViewControllerAnimated:YES completion:nil];
         } else {
             [AWECAUtils showToast:error ?: @"合成失败"];
