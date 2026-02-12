@@ -83,8 +83,11 @@ typedef NS_ENUM(NSInteger, AWECAVoiceSection) {
 }
 
 - (void)loadRecommended {
-    NSArray *saved = [[NSUserDefaults standardUserDefaults] arrayForKey:[self recommendedKey]];
-    if (saved && saved.count > 0) {
+    NSUserDefaults *d = [NSUserDefaults standardUserDefaults];
+    NSString *key = [self recommendedKey];
+    // objectForKey 返回 nil 说明从没存过，走默认；返回空数组说明用户清空了，保持空
+    id saved = [d objectForKey:key];
+    if (saved) {
         self.recommendedVoices = [saved mutableCopy];
     } else {
         self.recommendedVoices = [[self defaultRecommended] mutableCopy];
