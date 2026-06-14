@@ -45,7 +45,7 @@ static char kAWECAPlusElementViewKey;
 
 __asm__(".linker_option \"-framework\", \"CydiaSubstrate\"");
 
-@class AWECommentLongPressPanelAdaptar; @class AWECommentAudioRecorderController; @class AWECommentAudioPlayerManager; @class AWECommentAudioUploadManager;
+@class AWECommentAudioRecorderController; @class AWECommentLongPressPanelAdaptar; @class AWECommentAudioPlayerManager; @class AWECommentAudioUploadManager;
 static void (*_logos_orig$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, id, BOOL, id); static void _logos_method$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, id, BOOL, id); static void (*_logos_orig$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, NSString *); static void _logos_method$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, NSString *); static void (*_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double, id); static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double, id); static void (*_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double); static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double); static void (*_logos_orig$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentLongPressPanelAdaptar* _LOGOS_SELF_CONST, SEL, id, id, id, id); static void _logos_method$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$(_LOGOS_SELF_TYPE_NORMAL AWECommentLongPressPanelAdaptar* _LOGOS_SELF_CONST, SEL, id, id, id, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id, id);
 
 #line 24 "Tweak/Tweak.x"
@@ -291,11 +291,11 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
         return;
     }
     NSUInteger trailingInsertIndex = orderedAudioIndex + 1;
-    if (poiElement) {
-        [orderedElements insertObject:poiElement atIndex:trailingInsertIndex++];
-    }
     if (plusElement) {
-        [orderedElements insertObject:plusElement atIndex:trailingInsertIndex];
+        [orderedElements insertObject:plusElement atIndex:trailingInsertIndex++];
+    }
+    if (poiElement) {
+        [orderedElements insertObject:poiElement atIndex:trailingInsertIndex];
     }
 
     CGFloat firstCenterX = CGRectGetMidX(elements.firstObject.frame);

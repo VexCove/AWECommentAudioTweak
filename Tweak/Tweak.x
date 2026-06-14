@@ -251,7 +251,7 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
         }
     }
 
-    // 39.1.0 的原生顺序可能是“加号、定位”，这里固定为“定位、加号”。
+    // 39.1.0 评论栏尾部顺序固定为“加号、定位”。
     NSMutableArray<UIView *> *orderedElements = [NSMutableArray array];
     for (UIView *element in elements) {
         if (element == poiElement || element == plusElement) continue;
@@ -263,11 +263,11 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
         return;
     }
     NSUInteger trailingInsertIndex = orderedAudioIndex + 1;
-    if (poiElement) {
-        [orderedElements insertObject:poiElement atIndex:trailingInsertIndex++];
-    }
     if (plusElement) {
-        [orderedElements insertObject:plusElement atIndex:trailingInsertIndex];
+        [orderedElements insertObject:plusElement atIndex:trailingInsertIndex++];
+    }
+    if (poiElement) {
+        [orderedElements insertObject:poiElement atIndex:trailingInsertIndex];
     }
 
     CGFloat firstCenterX = CGRectGetMidX(elements.firstObject.frame);
