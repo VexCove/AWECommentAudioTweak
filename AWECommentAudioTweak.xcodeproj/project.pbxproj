@@ -1,0 +1,731 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		08FB49297760D69B5142F5B9 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58AE40A1BCEE30D000F23666 /* Foundation.framework */; };
+		285879BD69BEBB212E996B1B /* AWECATTSManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 0DF2D3E057F20DCE3520ACF5 /* AWECATTSManager.m */; };
+		31FB4D102DBA871E0B1B3D3A /* AWECADownloadManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 29058BBECD3BA5A3D5A2C013 /* AWECADownloadManager.m */; };
+		37378E5BB7BD8F1CAA12B297 /* AWECAAudioPickerController.m in Sources */ = {isa = PBXBuildFile; fileRef = 780D11BBD1B116E58FB887BD /* AWECAAudioPickerController.m */; };
+		39A1089F65F4C1DA0F849D80 /* AWECATTSVoiceListController.m in Sources */ = {isa = PBXBuildFile; fileRef = ACA36A8BB3CD6D74620B8557 /* AWECATTSVoiceListController.m */; };
+		4AF5130253CE3493A6502077 /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 83B556B7EDD415F52A549A9C /* AVFoundation.framework */; };
+		4C8CE5145F723F93B7847085 /* AWECATTSController.m in Sources */ = {isa = PBXBuildFile; fileRef = 23992C2B04AE159B5493EA98 /* AWECATTSController.m */; };
+		54BA0464593EF989AAD90707 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 58AE40A1BCEE30D000F23666 /* Foundation.framework */; };
+		56DBBC9FE900CC2D32E87433 /* CoreAudio.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 4B46244671F7F1230F61CDD9 /* CoreAudio.framework */; };
+		5C62A0D9988CE709C4B88D12 /* AWECAUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7F12C0245AF83DADA2154B /* AWECAUtils.m */; };
+		77877DA4D4040E1921062954 /* AWECATTSConfigController.m in Sources */ = {isa = PBXBuildFile; fileRef = 6F7351E478A3DD6393AAECE1 /* AWECATTSConfigController.m */; };
+		7D0A98644FEB532D0A627BBB /* Tweak.mm in Sources */ = {isa = PBXBuildFile; fileRef = B787B2F97B721B1CA6C47252 /* Tweak.mm */; };
+		B7989D1A434D886B114A9814 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 86C8791AE8FC27DBAAD1FF8E /* UIKit.framework */; };
+		E3683944C56D0E8C02F53616 /* UniformTypeIdentifiers.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 05B3374556D66216DFDD39B3 /* UniformTypeIdentifiers.framework */; };
+		F210BF51AFFCE0F96D6DE032 /* AWECAAudioReplacer.m in Sources */ = {isa = PBXBuildFile; fileRef = FB9BFD732694C0254E4671B9 /* AWECAAudioReplacer.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		358712E48ECA4C0AA552CDE1 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = AF9BFF7BE1550B902111EA57 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 0E303C16E21BC9BD4F8484B1;
+			remoteInfo = AWECommentAudioTweakDylib;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02ACAAC195A14B5426C3EC84 /* AWECATTSVoiceListController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECATTSVoiceListController.h; sourceTree = "<group>"; };
+		05B3374556D66216DFDD39B3 /* UniformTypeIdentifiers.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UniformTypeIdentifiers.framework; path = System/Library/Frameworks/UniformTypeIdentifiers.framework; sourceTree = SDKROOT; };
+		08A07D865898B7D91B214415 /* quick-resign.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; name = "quick-resign.sh"; path = "Scripts/quick-resign.sh"; sourceTree = "<group>"; };
+		09DED31A7E52DDD795DE1571 /* AWECATTSManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECATTSManager.h; sourceTree = "<group>"; };
+		0C1B49C09FF155337E2A87BA /* libAWECommentAudioTweakDylib.dylib */ = {isa = PBXFileReference; explicitFileType = "compiled.mach-o.dylib"; includeInIndex = 0; path = libAWECommentAudioTweakDylib.dylib; sourceTree = BUILT_PRODUCTS_DIR; };
+		0DF2D3E057F20DCE3520ACF5 /* AWECATTSManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECATTSManager.m; sourceTree = "<group>"; };
+		23992C2B04AE159B5493EA98 /* AWECATTSController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECATTSController.m; sourceTree = "<group>"; };
+		29058BBECD3BA5A3D5A2C013 /* AWECADownloadManager.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECADownloadManager.m; sourceTree = "<group>"; };
+		3176265E5548A78EE6538D2F /* 抖音(39.1.0)_静态脱壳𝓳𝓫.ipa */ = {isa = PBXFileReference; includeInIndex = 1; name = "抖音(39.1.0)_静态脱壳𝓳𝓫.ipa"; path = "TargetApp/抖音(39.1.0)_静态脱壳𝓳𝓫.ipa"; sourceTree = "<group>"; };
+		31FD722612BAE620438974A3 /* MDConfig.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; name = MDConfig.plist; path = Config/MDConfig.plist; sourceTree = "<group>"; };
+		32F836530627943CFE544E18 /* Info.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		3785CBB7DF1CC101B825D801 /* AWECAAudioReplacer.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECAAudioReplacer.h; sourceTree = "<group>"; };
+		39AEDA5187BAFBD82C3CF6F5 /* AWECATTSController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECATTSController.h; sourceTree = "<group>"; };
+		3DDC7C6E296874CBA0D2DA9D /* put ipa or app here */ = {isa = PBXFileReference; includeInIndex = 1; name = "put ipa or app here"; path = "TargetApp/put ipa or app here"; sourceTree = "<group>"; };
+		4B46244671F7F1230F61CDD9 /* CoreAudio.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreAudio.framework; path = System/Library/Frameworks/CoreAudio.framework; sourceTree = SDKROOT; };
+		5620725BB9AE8C918DE12601 /* AWECAHeaders.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECAHeaders.h; sourceTree = "<group>"; };
+		58AE40A1BCEE30D000F23666 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		6F7351E478A3DD6393AAECE1 /* AWECATTSConfigController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECATTSConfigController.m; sourceTree = "<group>"; };
+		6F7F12C0245AF83DADA2154B /* AWECAUtils.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECAUtils.m; sourceTree = "<group>"; };
+		7765B6726D802F6A34B38122 /* AWECommentAudioTweakDylib-Prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "AWECommentAudioTweakDylib-Prefix.pch"; sourceTree = "<group>"; };
+		780D11BBD1B116E58FB887BD /* AWECAAudioPickerController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECAAudioPickerController.m; sourceTree = "<group>"; };
+		7CB973CE8CFCAD538F71219F /* AWECAAudioPickerController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECAAudioPickerController.h; sourceTree = "<group>"; };
+		83B556B7EDD415F52A549A9C /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
+		86C8791AE8FC27DBAAD1FF8E /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		8FB8A258B1D4E95E2966DB8F /* AWECommentAudioTweak.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = AWECommentAudioTweak.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		95F7795004EBC9F7CF604264 /* icon.png */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = image.png; path = icon.png; sourceTree = "<group>"; };
+		ACA36A8BB3CD6D74620B8557 /* AWECATTSVoiceListController.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECATTSVoiceListController.m; sourceTree = "<group>"; };
+		B01E9E54931DBC1A321B056E /* Tweak.x */ = {isa = PBXFileReference; includeInIndex = 1; path = Tweak.x; sourceTree = "<group>"; };
+		B787B2F97B721B1CA6C47252 /* Tweak.mm */ = {isa = PBXFileReference; includeInIndex = 1; path = Tweak.mm; sourceTree = "<group>"; };
+		D0FB687B82CB470C4DF199A5 /* AWECATTSConfigController.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECATTSConfigController.h; sourceTree = "<group>"; };
+		D856D0CAC365594EF113CA93 /* generate-logos.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "generate-logos.sh"; sourceTree = "<group>"; };
+		E6136DE911E66C88A494DD61 /* AWECADownloadManager.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECADownloadManager.h; sourceTree = "<group>"; };
+		F82F9D8D852B8847CCB55930 /* AWECAUtils.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = AWECAUtils.h; sourceTree = "<group>"; };
+		FB9BFD732694C0254E4671B9 /* AWECAAudioReplacer.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = AWECAAudioReplacer.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		5475C2C58E8BF780A7434BF9 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				08FB49297760D69B5142F5B9 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D19B9BC4D6B8CFE496317CFE /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				54BA0464593EF989AAD90707 /* Foundation.framework in Frameworks */,
+				B7989D1A434D886B114A9814 /* UIKit.framework in Frameworks */,
+				4AF5130253CE3493A6502077 /* AVFoundation.framework in Frameworks */,
+				56DBBC9FE900CC2D32E87433 /* CoreAudio.framework in Frameworks */,
+				E3683944C56D0E8C02F53616 /* UniformTypeIdentifiers.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		35961A626DE958C96DAB79FF /* AWECommentAudioTweak App */ = {
+			isa = PBXGroup;
+			children = (
+				32F836530627943CFE544E18 /* Info.plist */,
+				95F7795004EBC9F7CF604264 /* icon.png */,
+				31FD722612BAE620438974A3 /* MDConfig.plist */,
+				08A07D865898B7D91B214415 /* quick-resign.sh */,
+				3DDC7C6E296874CBA0D2DA9D /* put ipa or app here */,
+				3176265E5548A78EE6538D2F /* 抖音(39.1.0)_静态脱壳𝓳𝓫.ipa */,
+			);
+			name = "AWECommentAudioTweak App";
+			path = AWECommentAudioTweak;
+			sourceTree = "<group>";
+		};
+		4202BAA7FF9E435E9ED45E5B = {
+			isa = PBXGroup;
+			children = (
+				80164467EEED480227949829 /* Products */,
+				74D069FD6E01D639ED83EFD2 /* Frameworks */,
+				35961A626DE958C96DAB79FF /* AWECommentAudioTweak App */,
+				D62F761DBEDFA00669FFC6BD /* AWECommentAudioTweakDylib */,
+				65059FC06A031EA1E87C0B8E /* Tweak Sources */,
+				695AE7F32E20C9B2931869BE /* Scripts */,
+			);
+			sourceTree = "<group>";
+		};
+		4266D1C3DAF247A2D8411367 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				58AE40A1BCEE30D000F23666 /* Foundation.framework */,
+				86C8791AE8FC27DBAAD1FF8E /* UIKit.framework */,
+				83B556B7EDD415F52A549A9C /* AVFoundation.framework */,
+				4B46244671F7F1230F61CDD9 /* CoreAudio.framework */,
+				05B3374556D66216DFDD39B3 /* UniformTypeIdentifiers.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		65059FC06A031EA1E87C0B8E /* Tweak Sources */ = {
+			isa = PBXGroup;
+			children = (
+				780D11BBD1B116E58FB887BD /* AWECAAudioPickerController.m */,
+				FB9BFD732694C0254E4671B9 /* AWECAAudioReplacer.m */,
+				29058BBECD3BA5A3D5A2C013 /* AWECADownloadManager.m */,
+				6F7351E478A3DD6393AAECE1 /* AWECATTSConfigController.m */,
+				23992C2B04AE159B5493EA98 /* AWECATTSController.m */,
+				0DF2D3E057F20DCE3520ACF5 /* AWECATTSManager.m */,
+				ACA36A8BB3CD6D74620B8557 /* AWECATTSVoiceListController.m */,
+				6F7F12C0245AF83DADA2154B /* AWECAUtils.m */,
+				B787B2F97B721B1CA6C47252 /* Tweak.mm */,
+				7CB973CE8CFCAD538F71219F /* AWECAAudioPickerController.h */,
+				3785CBB7DF1CC101B825D801 /* AWECAAudioReplacer.h */,
+				E6136DE911E66C88A494DD61 /* AWECADownloadManager.h */,
+				5620725BB9AE8C918DE12601 /* AWECAHeaders.h */,
+				D0FB687B82CB470C4DF199A5 /* AWECATTSConfigController.h */,
+				39AEDA5187BAFBD82C3CF6F5 /* AWECATTSController.h */,
+				09DED31A7E52DDD795DE1571 /* AWECATTSManager.h */,
+				02ACAAC195A14B5426C3EC84 /* AWECATTSVoiceListController.h */,
+				F82F9D8D852B8847CCB55930 /* AWECAUtils.h */,
+				B01E9E54931DBC1A321B056E /* Tweak.x */,
+			);
+			name = "Tweak Sources";
+			path = Tweak;
+			sourceTree = "<group>";
+		};
+		695AE7F32E20C9B2931869BE /* Scripts */ = {
+			isa = PBXGroup;
+			children = (
+				D856D0CAC365594EF113CA93 /* generate-logos.sh */,
+			);
+			name = Scripts;
+			path = Scripts;
+			sourceTree = "<group>";
+		};
+		74D069FD6E01D639ED83EFD2 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				4266D1C3DAF247A2D8411367 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		80164467EEED480227949829 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				8FB8A258B1D4E95E2966DB8F /* AWECommentAudioTweak.app */,
+				0C1B49C09FF155337E2A87BA /* libAWECommentAudioTweakDylib.dylib */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		D62F761DBEDFA00669FFC6BD /* AWECommentAudioTweakDylib */ = {
+			isa = PBXGroup;
+			children = (
+				7765B6726D802F6A34B38122 /* AWECommentAudioTweakDylib-Prefix.pch */,
+			);
+			name = AWECommentAudioTweakDylib;
+			path = AWECommentAudioTweakDylib;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		E6F9FC479696488A276B4CCF /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		0E303C16E21BC9BD4F8484B1 /* AWECommentAudioTweakDylib */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 3D84070887C10368FE5CA13C /* Build configuration list for PBXNativeTarget "AWECommentAudioTweakDylib" */;
+			buildPhases = (
+				1C9918A6A76FE6300D717D82 /* Generate Logos */,
+				E6F9FC479696488A276B4CCF /* Headers */,
+				725935507C9A77BED75C1FA4 /* Sources */,
+				D19B9BC4D6B8CFE496317CFE /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = AWECommentAudioTweakDylib;
+			productName = AWECommentAudioTweakDylib;
+			productReference = 0C1B49C09FF155337E2A87BA /* libAWECommentAudioTweakDylib.dylib */;
+			productType = "com.apple.product-type.library.dynamic";
+		};
+		F60B9C6C08258DF54F9171EC /* AWECommentAudioTweak */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 668442A682E83D4405154DC9 /* Build configuration list for PBXNativeTarget "AWECommentAudioTweak" */;
+			buildPhases = (
+				D8EFDE05E543B88AA7B9AB68 /* Sources */,
+				5475C2C58E8BF780A7434BF9 /* Frameworks */,
+				55C9F4BDB60D4B05352733E0 /* Resources */,
+				4658BF2EAF7427E7FDB3D47F /* MonkeyDev Package */,
+				5A49FB772271C3FC7451C0EA /* MonkeyDev Codesign */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				A4548044030E4E6582EFD71A /* PBXTargetDependency */,
+			);
+			name = AWECommentAudioTweak;
+			productName = AWECommentAudioTweak;
+			productReference = 8FB8A258B1D4E95E2966DB8F /* AWECommentAudioTweak.app */;
+			productType = "com.apple.product-type.application";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		AF9BFF7BE1550B902111EA57 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				BuildIndependentTargetsInParallel = 1;
+				LastSwiftUpdateCheck = 1600;
+				LastUpgradeCheck = 2650;
+			};
+			buildConfigurationList = 3341DB498214DA0BC34C4DC7 /* Build configuration list for PBXProject "AWECommentAudioTweak" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = en;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+				Base,
+			);
+			mainGroup = 4202BAA7FF9E435E9ED45E5B;
+			minimizedProjectReferenceProxies = 0;
+			preferredProjectObjectVersion = 77;
+			productRefGroup = 80164467EEED480227949829 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				F60B9C6C08258DF54F9171EC /* AWECommentAudioTweak */,
+				0E303C16E21BC9BD4F8484B1 /* AWECommentAudioTweakDylib */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		55C9F4BDB60D4B05352733E0 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		1C9918A6A76FE6300D717D82 /* Generate Logos */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Tweak/Tweak.x",
+			);
+			name = "Generate Logos";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+				"$(SRCROOT)/Tweak/Tweak.mm",
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Scripts/generate-logos.sh\"";
+		};
+		4658BF2EAF7427E7FDB3D47F /* MonkeyDev Package */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "MonkeyDev Package";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = /opt/MonkeyDev/Tools/pack.sh;
+		};
+		5A49FB772271C3FC7451C0EA /* MonkeyDev Codesign */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+			);
+			name = "MonkeyDev Codesign";
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if [ \"${CODE_SIGNING_ALLOWED}\" = \"YES\" ] && [ -n \"${EXPANDED_CODE_SIGN_IDENTITY}\" ]; then\n    /opt/MonkeyDev/Tools/pack.sh codesign\nelse\n    echo \"Skipping MonkeyDev codesign because code signing is disabled.\"\nfi";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		725935507C9A77BED75C1FA4 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				37378E5BB7BD8F1CAA12B297 /* AWECAAudioPickerController.m in Sources */,
+				F210BF51AFFCE0F96D6DE032 /* AWECAAudioReplacer.m in Sources */,
+				31FB4D102DBA871E0B1B3D3A /* AWECADownloadManager.m in Sources */,
+				77877DA4D4040E1921062954 /* AWECATTSConfigController.m in Sources */,
+				4C8CE5145F723F93B7847085 /* AWECATTSController.m in Sources */,
+				285879BD69BEBB212E996B1B /* AWECATTSManager.m in Sources */,
+				39A1089F65F4C1DA0F849D80 /* AWECATTSVoiceListController.m in Sources */,
+				5C62A0D9988CE709C4B88D12 /* AWECAUtils.m in Sources */,
+				7D0A98644FEB532D0A627BBB /* Tweak.mm in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D8EFDE05E543B88AA7B9AB68 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		A4548044030E4E6582EFD71A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = AWECommentAudioTweakDylib;
+			target = 0E303C16E21BC9BD4F8484B1 /* AWECommentAudioTweakDylib */;
+			targetProxy = 358712E48ECA4C0AA552CDE1 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		2EB66349E5DE1A9FF796E591 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = dwarf;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_TESTABILITY = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = INCLUDE_SOURCE;
+				MTL_FAST_MATH = YES;
+				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG;
+				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		3C320B095BE8C2D76F9FDD89 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(MonkeyDevPath)/Frameworks/**",
+					"$(MonkeyDevPath)/Librarys/**",
+					"$(MonkeyDevTheosPath)/vendor/lib",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AWECommentAudioTweakDylib/AWECommentAudioTweakDylib-Prefix.pch";
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Tweak",
+					"$(MonkeyDevPath)/include",
+					"$(MonkeyDevTheosPath)/vendor/include/**",
+				);
+				INSTALL_PATH = "@executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(MonkeyDevPath)/Frameworks",
+					"$(MonkeyDevTheosPath)/vendor/lib/**",
+				);
+				MonkeyDevPath = /opt/MonkeyDev;
+				MonkeyDevTheosPath = /opt/theos;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fobjc-arc",
+					"-DTHEOS_INSTANCE_NAME=\\\"AWECommentAudioTweakDylib\\\"",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Xlinker",
+					"-not_for_dyld_shared_cache",
+					"-weak_library",
+					"$(MonkeyDevPath)/Frameworks/libsubstrate.dylib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+			};
+			name = Debug;
+		};
+		41B93F176C46B03FEE315DF5 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = arm64;
+				CLANG_ANALYZER_NONNULL = YES;
+				CLANG_ANALYZER_NUMBER_OBJECT_CONVERSION = YES_AGGRESSIVE;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++14";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = YES;
+				CLANG_WARN_BLOCK_CAPTURE_AUTORELEASING = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_COMMA = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DEPRECATED_OBJC_IMPLEMENTATIONS = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES_ERROR;
+				CLANG_WARN_DOCUMENTATION_COMMENTS = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INFINITE_RECURSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_NON_LITERAL_NULL_CONVERSION = YES;
+				CLANG_WARN_OBJC_IMPLICIT_RETAIN_SELF = YES;
+				CLANG_WARN_OBJC_LITERAL_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES_ERROR;
+				CLANG_WARN_QUOTED_INCLUDE_IN_FRAMEWORK_HEADER = YES;
+				CLANG_WARN_RANGE_LOOP_ANALYSIS = YES;
+				CLANG_WARN_STRICT_PROTOTYPES = YES;
+				CLANG_WARN_SUSPICIOUS_MOVE = YES;
+				CLANG_WARN_UNGUARDED_AVAILABILITY = YES_AGGRESSIVE;
+				CLANG_WARN_UNREACHABLE_CODE = YES;
+				CLANG_WARN__DUPLICATE_METHOD_MATCH = YES;
+				COPY_PHASE_STRIP = NO;
+				DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym";
+				ENABLE_NS_ASSERTIONS = NO;
+				ENABLE_STRICT_OBJC_MSGSEND = YES;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu11;
+				GCC_NO_COMMON_BLOCKS = YES;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES_ERROR;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				MTL_ENABLE_DEBUG_INFO = NO;
+				MTL_FAST_MATH = YES;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				SWIFT_COMPILATION_MODE = wholemodule;
+				SWIFT_OPTIMIZATION_LEVEL = "-O";
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Release;
+		};
+		B459DA317BA1213BC6C02E17 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGNING_ALLOWED = NO;
+				CODE_SIGNING_REQUIRED = NO;
+				DYLIB_COMPATIBILITY_VERSION = 1;
+				DYLIB_CURRENT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				EXECUTABLE_PREFIX = lib;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(MonkeyDevPath)/Frameworks/**",
+					"$(MonkeyDevPath)/Librarys/**",
+					"$(MonkeyDevTheosPath)/vendor/lib",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "AWECommentAudioTweakDylib/AWECommentAudioTweakDylib-Prefix.pch";
+				GCC_WARN_INHIBIT_ALL_WARNINGS = YES;
+				HEADER_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(SRCROOT)/Tweak",
+					"$(MonkeyDevPath)/include",
+					"$(MonkeyDevTheosPath)/vendor/include/**",
+				);
+				INSTALL_PATH = "@executable_path/Frameworks";
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				LIBRARY_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(MonkeyDevPath)/Frameworks",
+					"$(MonkeyDevTheosPath)/vendor/lib/**",
+				);
+				MonkeyDevPath = /opt/MonkeyDev;
+				MonkeyDevTheosPath = /opt/theos;
+				OTHER_CFLAGS = (
+					"$(inherited)",
+					"-fobjc-arc",
+					"-DTHEOS_INSTANCE_NAME=\\\"AWECommentAudioTweakDylib\\\"",
+				);
+				OTHER_LDFLAGS = (
+					"$(inherited)",
+					"-Xlinker",
+					"-not_for_dyld_shared_cache",
+					"-weak_library",
+					"$(MonkeyDevPath)/Frameworks/libsubstrate.dylib",
+				);
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F201C43B43FFD0DD92E4A044 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AWECommentAudioTweak/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				MONKEYDEV_ADD_SUBSTRATE = YES;
+				MONKEYDEV_CLASS_DUMP = NO;
+				MONKEYDEV_DEFAULT_BUNDLEID = NO;
+				MONKEYDEV_INSERT_DYLIB = YES;
+				MONKEYDEV_RESTORE_SYMBOL = NO;
+				MONKEYDEV_TARGET_APP = Optional;
+				PODS_CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				PODS_ROOT = "$(SRCROOT)/Pods";
+				PRODUCT_BUNDLE_IDENTIFIER = com.keanyang.AWECommentAudioTweak;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+			};
+			name = Debug;
+		};
+		FBE5A9F7A8A38B57A90442DE /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ARCHS = arm64;
+				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CLANG_ENABLE_OBJC_WEAK = NO;
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				ENABLE_BITCODE = NO;
+				ENABLE_USER_SCRIPT_SANDBOXING = NO;
+				GENERATE_INFOPLIST_FILE = NO;
+				INFOPLIST_FILE = AWECommentAudioTweak/Info.plist;
+				IPHONEOS_DEPLOYMENT_TARGET = 15.0;
+				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				MARKETING_VERSION = 1.0;
+				MONKEYDEV_ADD_SUBSTRATE = YES;
+				MONKEYDEV_CLASS_DUMP = NO;
+				MONKEYDEV_DEFAULT_BUNDLEID = NO;
+				MONKEYDEV_INSERT_DYLIB = YES;
+				MONKEYDEV_RESTORE_SYMBOL = NO;
+				MONKEYDEV_TARGET_APP = Optional;
+				PODS_CONFIGURATION_BUILD_DIR = "$(BUILD_DIR)/$(CONFIGURATION)$(EFFECTIVE_PLATFORM_NAME)";
+				PODS_ROOT = "$(SRCROOT)/Pods";
+				PRODUCT_BUNDLE_IDENTIFIER = com.keanyang.AWECommentAudioTweak;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SUPPORTED_PLATFORMS = iphoneos;
+				SUPPORTS_MACCATALYST = NO;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		3341DB498214DA0BC34C4DC7 /* Build configuration list for PBXProject "AWECommentAudioTweak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				2EB66349E5DE1A9FF796E591 /* Debug */,
+				41B93F176C46B03FEE315DF5 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		3D84070887C10368FE5CA13C /* Build configuration list for PBXNativeTarget "AWECommentAudioTweakDylib" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				B459DA317BA1213BC6C02E17 /* Release */,
+				3C320B095BE8C2D76F9FDD89 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		668442A682E83D4405154DC9 /* Build configuration list for PBXNativeTarget "AWECommentAudioTweak" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				FBE5A9F7A8A38B57A90442DE /* Release */,
+				F201C43B43FFD0DD92E4A044 /* Debug */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = AF9BFF7BE1550B902111EA57 /* Project object */;
+}

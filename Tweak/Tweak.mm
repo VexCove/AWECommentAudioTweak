@@ -1,5 +1,6 @@
-// AWECommentAudioTweak - 抖音评论语音 hook
-// @cookieodd | github.com/cookieodd | t.me/cookieodd
+#line 1 "Tweak/Tweak.x"
+
+
 
 #import "AWECAHeaders.h"
 #import "AWECAUtils.h"
@@ -10,7 +11,7 @@
 #import <objc/runtime.h>
 #import <objc/message.h>
 
-// 前置声明，别急后面有实现
+
 static void setupAudioIconElementHook(void);
 static void setupAudioInputElementHook(void);
 static void setupTrailingIconElementHooks(void);
@@ -19,14 +20,41 @@ static char kAWECAAIContainerKey;
 static char kAWECAPoiElementViewKey;
 static char kAWECAPlusElementViewKey;
 
-// === Hook 1: 录完就偷梁换柱 ===
 
-%hook AWECommentAudioRecorderController
 
-- (void)audioRecorderDidFinishRecording:(id)recorder success:(BOOL)success error:(id)error {
+
+#include <substrate.h>
+#if defined(__clang__)
+#if __has_feature(objc_arc)
+#define _LOGOS_SELF_TYPE_NORMAL __unsafe_unretained
+#define _LOGOS_SELF_TYPE_INIT __attribute__((ns_consumed))
+#define _LOGOS_SELF_CONST const
+#define _LOGOS_RETURN_RETAINED __attribute__((ns_returns_retained))
+#else
+#define _LOGOS_SELF_TYPE_NORMAL
+#define _LOGOS_SELF_TYPE_INIT
+#define _LOGOS_SELF_CONST
+#define _LOGOS_RETURN_RETAINED
+#endif
+#else
+#define _LOGOS_SELF_TYPE_NORMAL
+#define _LOGOS_SELF_TYPE_INIT
+#define _LOGOS_SELF_CONST
+#define _LOGOS_RETURN_RETAINED
+#endif
+
+__asm__(".linker_option \"-framework\", \"CydiaSubstrate\"");
+
+@class AWECommentLongPressPanelAdaptar; @class AWECommentAudioRecorderController; @class AWECommentAudioPlayerManager; @class AWECommentAudioUploadManager;
+static void (*_logos_orig$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, id, BOOL, id); static void _logos_method$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, id, BOOL, id); static void (*_logos_orig$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, NSString *); static void _logos_method$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, NSString *); static void (*_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double, id); static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double, id); static void (*_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double); static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double); static void (*_logos_orig$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentLongPressPanelAdaptar* _LOGOS_SELF_CONST, SEL, id, id, id, id); static void _logos_method$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$(_LOGOS_SELF_TYPE_NORMAL AWECommentLongPressPanelAdaptar* _LOGOS_SELF_CONST, SEL, id, id, id, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id, id);
+
+#line 24 "Tweak/Tweak.x"
+
+
+static void _logos_method$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id recorder, BOOL success, id error) {
     if (success && [AWECAAudioReplacer shared].enabled) {
         NSString *recorderURL = self.recorder.url.path;
-        %orig;
+        _logos_orig$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$(self, _cmd, recorder, success, error);
         NSString *pathAfter = self.audioFilePath;
 
         if (pathAfter.length > 0) {
@@ -36,12 +64,12 @@ static char kAWECAPlusElementViewKey;
         }
         [AWECAUtils showToast:@"语音已替换"];
     } else {
-        %orig;
+        _logos_orig$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$(self, _cmd, recorder, success, error);
     }
 }
 
-- (void)setAudioFilePath:(NSString *)audioFilePath {
-    %orig;
+static void _logos_method$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, NSString * audioFilePath) {
+    _logos_orig$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$(self, _cmd, audioFilePath);
     if (!audioFilePath.length) return;
     if (![AWECAAudioReplacer shared].enabled) return;
     if ([[NSFileManager defaultManager] fileExistsAtPath:audioFilePath]) {
@@ -49,38 +77,38 @@ static char kAWECAPlusElementViewKey;
     }
 }
 
-%end
 
-// === Hook 2: 播放时顺手把 CDN 链接薅了 ===
 
-%hook AWECommentAudioPlayerManager
 
-- (void)playAudioWithVideoModel:(id)videoModel startTime:(double)startTime audioEffectExternInfo:(id)info {
+
+
+
+static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id videoModel, double startTime, id info) {
     if (videoModel && [videoModel isKindOfClass:[NSString class]]) {
         NSString *jsonStr = (NSString *)videoModel;
         [[AWECADownloadManager shared] parseAndCacheVideoModelJSON:jsonStr];
     }
-    %orig;
+    _logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$(self, _cmd, videoModel, startTime, info);
 }
 
-- (void)playAudioWithVideoModel:(id)videoModel startTime:(double)startTime {
+static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id videoModel, double startTime) {
     if (videoModel && [videoModel isKindOfClass:[NSString class]]) {
         [[AWECADownloadManager shared] parseAndCacheVideoModelJSON:(NSString *)videoModel];
     }
-    %orig;
+    _logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$(self, _cmd, videoModel, startTime);
 }
 
-%end
 
-// === Hook 3: 长按菜单加个保存语音的活 ===
 
-%hook AWECommentLongPressPanelAdaptar
 
-- (void)showLongPressPanelWithParam:(id)param config:(id)config showSheetCompletion:(id)showCompletion dismissSheetCompletion:(id)dismissCompletion {
-    // 先让原生面板该弹弹
-    %orig;
 
-    // 看看有没有语音
+
+
+static void _logos_method$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$(_LOGOS_SELF_TYPE_NORMAL AWECommentLongPressPanelAdaptar* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id param, id config, id showCompletion, id dismissCompletion) {
+
+    _logos_orig$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$(self, _cmd, param, config, showCompletion, dismissCompletion);
+
+
     AWECommentModel *comment = nil;
     if ([param respondsToSelector:@selector(selectdComment)]) {
         comment = [(AWECommentLongPressPanelParam *)param selectdComment];
@@ -90,53 +118,53 @@ static char kAWECAPlusElementViewKey;
         return;
     }
 
-    // 等动画跑完再弹，不然打架
+
     AWECommentModel *savedComment = comment;
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(0.6 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         [[AWECADownloadManager shared] showSaveDialogAndDownload:savedComment];
     });
 }
 
-%end
 
-// === Hook 5: 上传前再换一波，双保险 ===
 
-%hook AWECommentAudioUploadManager
 
-- (void)startUploadAudioWithFilePath:(id)filePath {
+
+
+
+static void _logos_method$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id filePath) {
     if ([AWECAAudioReplacer shared].enabled && filePath) {
         NSString *path = (NSString *)filePath;
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
             [[AWECAAudioReplacer shared] replaceAudioAtPath:path];
         }
     }
-    %orig;
+    _logos_orig$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$(self, _cmd, filePath);
 }
 
-- (void)uploadAudioWithFilePath:(id)filePath completion:(id)completion {
+static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id filePath, id completion) {
     if ([AWECAAudioReplacer shared].enabled && filePath) {
         NSString *path = (NSString *)filePath;
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
             [[AWECAAudioReplacer shared] replaceAudioAtPath:path];
         }
     }
-    %orig;
+    _logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$(self, _cmd, filePath, completion);
 }
 
-- (void)uploadAudioWithFilePath:(id)filePath authCompletion:(id)authCompletion completion:(id)completion {
+static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id filePath, id authCompletion, id completion) {
     if ([AWECAAudioReplacer shared].enabled && filePath) {
         NSString *path = (NSString *)filePath;
         if ([[NSFileManager defaultManager] fileExistsAtPath:path]) {
             [[AWECAAudioReplacer shared] replaceAudioAtPath:path];
         }
     }
-    %orig;
+    _logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$(self, _cmd, filePath, authCompletion, completion);
 }
 
-%end
 
 
-// === Hook 6: 预览气泡也得换，顺便修时长 ===
+
+
 
 static void (*orig_generateAudioPreviewBubble)(id self, SEL _cmd, id recordedModel);
 static void hook_generateAudioPreviewBubble(id self, SEL _cmd, id recordedModel) {
@@ -169,9 +197,9 @@ static void setupAudioInputElementHook(void) {
     }
 }
 
-// === Hook 7: 语音按钮长按弹选择器，红点提示，AI按钮 ===
 
-// AI按钮点击回调，打开TTS主页面
+
+
 static void aweca_aiButtonTappedIMP(id self, SEL _cmd) {
     UIViewController *vc = [AWECAUtils topViewController];
     AWECATTSController *tts = [[AWECATTSController alloc] init];
@@ -180,7 +208,7 @@ static void aweca_aiButtonTappedIMP(id self, SEL _cmd) {
     if (@available(iOS 16.0, *)) {
         UISheetPresentationController *sheet = nav.sheetPresentationController;
         if (sheet) {
-            // 紧凑 + 全屏两档，默认紧凑
+
             UISheetPresentationControllerDetent *fit = [UISheetPresentationControllerDetent
                 customDetentWithIdentifier:@"ttsCompact"
                 resolver:^CGFloat(id<UISheetPresentationControllerDetentResolutionContext> ctx) {
@@ -201,7 +229,7 @@ static void aweca_aiButtonTappedIMP(id self, SEL _cmd) {
     [vc presentViewController:nav animated:YES completion:nil];
 }
 
-// AI 按钮不加入 AWEElementStackView，避免被 39.1.0 当成原生元素压缩间距。
+
 static void aweca_updateAIButtonPosition(UIView *stackView) {
     UIView *aiContainer = objc_getAssociatedObject(stackView, &kAWECAAIContainerKey);
     if (!aiContainer) return;
@@ -251,7 +279,7 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
         }
     }
 
-    // 39.1.0 的原生顺序可能是“加号、定位”，这里固定为“定位、加号”。
+
     NSMutableArray<UIView *> *orderedElements = [NSMutableArray array];
     for (UIView *element in elements) {
         if (element == poiElement || element == plusElement) continue;
@@ -280,7 +308,7 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
     CGFloat slotWidth = (lastCenterX - firstCenterX) / (CGFloat)(totalSlotCount - 1);
     NSUInteger aiSlotIndex = orderedAudioIndex + 1;
 
-    // 在原生左右边界内均分全部按钮，不侵入发送键占位区域。
+
     for (NSUInteger index = 0; index < orderedElements.count; index++) {
         UIView *element = orderedElements[index];
         NSUInteger slotIndex = index < aiSlotIndex ? index : index + 1;
@@ -301,7 +329,7 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
     aiContainer.alpha = 1.0;
     [overlayHost bringSubviewToFront:aiContainer];
 
-    // 更新图标颜色
+
     UIButton *aiBtn = nil;
     for (UIView *sub in aiContainer.subviews) {
         if ([sub isKindOfClass:[UIButton class]]) {
@@ -341,7 +369,7 @@ static void hook_audioIconViewDidLoad(id self, SEL _cmd) {
     redDot.tag = 19527;
     [elementView addSubview:redDot];
 
-    // AI 使用覆盖层，不作为 AWEElementStackView 的布局元素。
+
     UIView *stackView = elementView.superview;
     if (!stackView) return;
     if (objc_getAssociatedObject(stackView, &kAWECAAIContainerKey)) return;
@@ -355,8 +383,8 @@ static void hook_audioIconViewDidLoad(id self, SEL _cmd) {
     UIImageSymbolConfiguration *cfg = [UIImageSymbolConfiguration configurationWithPointSize:16 weight:UIImageSymbolWeightRegular];
     UIImage *aiIcon = [UIImage systemImageNamed:@"icloud.circle" withConfiguration:cfg];
     [aiBtn setImage:aiIcon forState:UIControlStateNormal];
-    
-    // 用主题管理器判断颜色
+
+
     Class themeMgr = NSClassFromString(@"AWEUIThemeManager");
     BOOL isLight = themeMgr ? [themeMgr isLightTheme] : NO;
     aiBtn.tintColor = isLight ? [UIColor blackColor] : [UIColor whiteColor];
@@ -438,12 +466,12 @@ static void setupTrailingIconElementHooks(void) {
     }
 }
 
-// === Hook 8: 原生布局完成后插入 AI 槽位 ===
+
 
 static void (*orig_stackViewLayoutSubviews)(id self, SEL _cmd);
 static void hook_stackViewLayoutSubviews(id self, SEL _cmd) {
     orig_stackViewLayoutSubviews(self, _cmd);
-    
+
     UIView *sv = (UIView *)self;
     if (objc_getAssociatedObject(sv, &kAWECAAIContainerKey)) {
         aweca_updateAIButtonPosition(sv);
@@ -461,18 +489,21 @@ static void setupStackViewLayoutHook(void) {
     }
 }
 
-// === %ctor 搞定收工，插件启动 ===
 
-%ctor {
+
+static __attribute__((constructor)) void _logosLocalCtor_30ebfd71(int __unused argc, char __unused **argv, char __unused **envp) {
     @autoreleasepool {
         [AWECAUtils ensureDirectoriesExist];
 
         [AWECAAudioReplacer shared];
 
-        // 别问为啥手动hook，问就是Swift类runtime搞不定
+
         setupAudioInputElementHook();
         setupAudioIconElementHook();
         setupTrailingIconElementHooks();
         setupStackViewLayoutHook();
     }
 }
+static __attribute__((constructor)) void _logosLocalInit() {
+{Class _logos_class$_ungrouped$AWECommentAudioRecorderController = objc_getClass("AWECommentAudioRecorderController"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioRecorderController, @selector(audioRecorderDidFinishRecording:success:error:), (IMP)&_logos_method$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioRecorderController, @selector(setAudioFilePath:), (IMP)&_logos_method$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$);}Class _logos_class$_ungrouped$AWECommentAudioPlayerManager = objc_getClass("AWECommentAudioPlayerManager"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioPlayerManager, @selector(playAudioWithVideoModel:startTime:audioEffectExternInfo:), (IMP)&_logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioPlayerManager, @selector(playAudioWithVideoModel:startTime:), (IMP)&_logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$);}Class _logos_class$_ungrouped$AWECommentLongPressPanelAdaptar = objc_getClass("AWECommentLongPressPanelAdaptar"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentLongPressPanelAdaptar, @selector(showLongPressPanelWithParam:config:showSheetCompletion:dismissSheetCompletion:), (IMP)&_logos_method$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$, (IMP*)&_logos_orig$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$);}Class _logos_class$_ungrouped$AWECommentAudioUploadManager = objc_getClass("AWECommentAudioUploadManager"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioUploadManager, @selector(startUploadAudioWithFilePath:), (IMP)&_logos_method$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioUploadManager, @selector(uploadAudioWithFilePath:completion:), (IMP)&_logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioUploadManager, @selector(uploadAudioWithFilePath:authCompletion:completion:), (IMP)&_logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$);}} }
+#line 479 "Tweak/Tweak.x"

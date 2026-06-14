@@ -184,6 +184,10 @@
 @interface AWECommentInputViewSwiftImpl_CommentPoiIconElement : AWEBaseElement
 @end
 
+// 加号按钮
+@interface AWECommentInputViewSwiftImpl_CommentPlusIconElement : AWEBaseElement
+@end
+
 // ==================== 播放控制器 ====================
 
 @interface AWECommentListAudioPlayerController : NSObject
@@ -210,5 +214,4 @@
 + (BOOL)isLightTheme;
 - (id)currentTheme;
 @end
-
 

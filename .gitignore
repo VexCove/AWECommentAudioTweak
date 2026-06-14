@@ -1,3 +1,11 @@
 .DS_Store
 .theos/
 packages/
+DerivedData/
+LatestBuild
+xcuserdata/
+*.xcuserstate
+AWECommentAudioTweak/tmp/
+AWECommentAudioTweak/TargetApp/*.ipa
+AWECommentAudioTweak/TargetApp/*.app/
+AWECommentAudioTweak/TargetApp/.current_put_app

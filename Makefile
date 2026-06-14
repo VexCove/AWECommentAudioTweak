@@ -6,7 +6,7 @@ TARGET := iphone:clang:latest:15.0
 
 include $(THEOS)/makefiles/common.mk
 
-LIBRARY_NAME = AWECommentAudioTweak
+TWEAK_NAME = AWECommentAudioTweak
 
 AWECommentAudioTweak_FILES = Tweak/Tweak.x \
 	Tweak/AWECADownloadManager.m \
@@ -23,4 +23,4 @@ AWECommentAudioTweak_LDFLAGS = -Xlinker -not_for_dyld_shared_cache
 AWECommentAudioTweak_FRAMEWORKS = UIKit Foundation AVFoundation CoreAudio UniformTypeIdentifiers
 AWECommentAudioTweak_LIBRARIES = objc
 
-include $(THEOS_MAKE_PATH)/library.mk
+include $(THEOS_MAKE_PATH)/tweak.mk
