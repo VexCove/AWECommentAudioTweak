@@ -505,8 +505,8 @@ while IFS=$'\t' read -r hash subject commit_type; do
     relevant_count=$((relevant_count + 1))
     short_hash=${hash:0:8}
     summary_title=$(summarize_commit_title "$hash" "$subject" "$commit_type")
-    entry="- \`${commit_type}\` **${summary_title}** ([\`${short_hash}\`](${server_url}/${repository}/commit/${hash}))"
-    printf '%s\n' "$entry" >> "$(section_file_for_type "$commit_type")"
+    entry="### \`${commit_type}\` ${summary_title} ([\`${short_hash}\`](${server_url}/${repository}/commit/${hash}))"
+    printf '%s\n\n' "$entry" >> "$(section_file_for_type "$commit_type")"
     record_contributor_for_commit "$hash"
 done < "$records_file"
 
