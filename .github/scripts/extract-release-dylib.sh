@@ -3,17 +3,15 @@
 set -euo pipefail
 shopt -s nullglob
 
-package_id=${PACKAGE_ID:-$(awk -F': ' '$1 == "Package" { print $2; exit }' control)}
 package_version=${PACKAGE_VERSION:-$(awk -F': ' '$1 == "Version" { print $2; exit }' control)}
 source_deb_glob=${SOURCE_DEB_GLOB:-packages/*arm64e*.deb}
 fallback_deb_glob=${FALLBACK_DEB_GLOB:-packages/*roothide*.deb}
 output_dir=${OUTPUT_DIR:-packages}
 tweak_dylib_name=${TWEAK_DYLIB_NAME:-AWECommentAudioTweak.dylib}
-output_dylib_name=${OUTPUT_DYLIB_NAME:-AWECommentAudioTweak_${package_version}.dylib}
 required_arch=${REQUIRED_ARCH:-arm64e}
 
-if [[ -z "$package_id" || -z "$package_version" ]]; then
-    echo "Unable to read package id or version from control" >&2
+if [[ -z "$package_version" ]]; then
+    echo "Unable to read package version from control" >&2
     exit 1
 fi
 
@@ -76,7 +74,7 @@ if [[ "${#dylib_paths[@]}" -ne 1 ]]; then
 fi
 
 mkdir -p "$output_dir"
-output_file="${output_dir}/${output_dylib_name}"
+output_file="${output_dir}/AWECommentAudioTweak_${package_version}.dylib"
 cp "${dylib_paths[0]}" "$output_file"
 
 if command -v lipo >/dev/null 2>&1; then
