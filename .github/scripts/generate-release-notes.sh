@@ -505,13 +505,13 @@ while IFS=$'\t' read -r hash subject commit_type; do
     relevant_count=$((relevant_count + 1))
     short_hash=${hash:0:8}
     summary_title=$(summarize_commit_title "$hash" "$subject" "$commit_type")
-    entry="### \`${commit_type}\` ${summary_title} ([\`${short_hash}\`](${server_url}/${repository}/commit/${hash}))"
-    printf '%s\n\n' "$entry" >> "$(section_file_for_type "$commit_type")"
+    entry="- \`${commit_type}\` **${summary_title}** ([\`${short_hash}\`](${server_url}/${repository}/commit/${hash}))"
+    printf '%s\n' "$entry" >> "$(section_file_for_type "$commit_type")"
     record_contributor_for_commit "$hash"
 done < "$records_file"
 
 cat > "$notes_file" <<EOF
-# ${release_title} 更新日志
+## ${release_title} 更新日志
 EOF
 
 append_section() {
@@ -519,7 +519,7 @@ append_section() {
     local section_file=$2
 
     if [[ -s "$section_file" ]]; then
-        printf '\n## %s\n\n' "$title" >> "$notes_file"
+        printf '\n### %s\n\n' "$title" >> "$notes_file"
         cat "$section_file" >> "$notes_file"
     fi
 }
