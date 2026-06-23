@@ -16,6 +16,7 @@ static void setupAudioInputElementHook(void);
 static void setupTrailingIconElementHooks(void);
 static void setupStackViewLayoutHook(void);
 static char kAWECAAIContainerKey;
+static char kAWECAAudioElementViewKey;
 static char kAWECAPoiElementViewKey;
 static char kAWECAPlusElementViewKey;
 
@@ -201,7 +202,11 @@ static void aweca_aiButtonTappedIMP(id self, SEL _cmd) {
     [vc presentViewController:nav animated:YES completion:nil];
 }
 
-// AI 按钮不加入 AWEElementStackView，避免被 39.1.0 当成原生元素压缩间距。
+static BOOL aweca_isAudioElementView(UIView *element) {
+    return objc_getAssociatedObject(element, &kAWECAAudioElementViewKey) != nil || [element viewWithTag:19527] != nil;
+}
+
+// AI 按钮挂回 stackView 以跟随原生动画；layout 前会临时移除，避免被原生布局计入按钮数量。
 static void aweca_updateAIButtonPosition(UIView *stackView) {
     UIView *aiContainer = objc_getAssociatedObject(stackView, &kAWECAAIContainerKey);
     if (!aiContainer) return;
@@ -209,30 +214,25 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
     Class evClass = NSClassFromString(@"AWEBaseElementView");
     if (!evClass) return;
 
-    UIView *overlayHost = stackView.superview;
-    if (!overlayHost) {
-        aiContainer.hidden = YES;
-        return;
-    }
-    if (aiContainer.superview != overlayHost) {
+    if (aiContainer.superview != stackView) {
         [aiContainer removeFromSuperview];
-        [overlayHost addSubview:aiContainer];
+        [stackView addSubview:aiContainer];
     }
 
     NSMutableArray<UIView *> *elements = [NSMutableArray array];
     for (UIView *sub in stackView.subviews) {
         if (![sub isKindOfClass:evClass]) continue;
-        if (sub.hidden || sub.alpha < 0.01 || CGRectIsEmpty(sub.frame)) continue;
+        if (sub.hidden || CGRectIsEmpty(sub.bounds)) continue;
         [elements addObject:sub];
     }
     [elements sortUsingComparator:^NSComparisonResult(UIView *left, UIView *right) {
-        if (CGRectGetMinX(left.frame) < CGRectGetMinX(right.frame)) return NSOrderedAscending;
-        if (CGRectGetMinX(left.frame) > CGRectGetMinX(right.frame)) return NSOrderedDescending;
+        if (left.center.x < right.center.x) return NSOrderedAscending;
+        if (left.center.x > right.center.x) return NSOrderedDescending;
         return NSOrderedSame;
     }];
 
     NSUInteger audioIndex = [elements indexOfObjectPassingTest:^BOOL(UIView *element, NSUInteger idx, BOOL *stop) {
-        return [element viewWithTag:19527] != nil;
+        return aweca_isAudioElementView(element);
     }];
     if (audioIndex == NSNotFound) {
         aiContainer.hidden = YES;
@@ -270,8 +270,8 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
         [orderedElements insertObject:poiElement atIndex:trailingInsertIndex];
     }
 
-    CGFloat firstCenterX = CGRectGetMidX(elements.firstObject.frame);
-    CGFloat lastCenterX = CGRectGetMidX(elements.lastObject.frame);
+    CGFloat firstCenterX = elements.firstObject.center.x;
+    CGFloat lastCenterX = elements.lastObject.center.x;
     NSUInteger totalSlotCount = orderedElements.count + 1;
     if (totalSlotCount < 2 || lastCenterX <= firstCenterX) {
         aiContainer.hidden = YES;
@@ -284,22 +284,18 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
     for (NSUInteger index = 0; index < orderedElements.count; index++) {
         UIView *element = orderedElements[index];
         NSUInteger slotIndex = index < aiSlotIndex ? index : index + 1;
-        CGRect frame = element.frame;
-        frame.origin.x = firstCenterX + slotWidth * slotIndex - CGRectGetWidth(frame) * 0.5;
-        element.frame = frame;
+        CGPoint center = element.center;
+        center.x = firstCenterX + slotWidth * slotIndex;
+        element.center = center;
     }
 
     CGFloat buttonSize = 24.0;
-    CGRect aiFrameInStack = CGRectMake(
-        firstCenterX + slotWidth * aiSlotIndex - buttonSize * 0.5,
-        CGRectGetMidY(audioElement.frame) - buttonSize * 0.5,
-        buttonSize,
-        buttonSize
-    );
-    aiContainer.frame = [stackView convertRect:aiFrameInStack toView:overlayHost];
-    aiContainer.hidden = NO;
-    aiContainer.alpha = 1.0;
-    [overlayHost bringSubviewToFront:aiContainer];
+    aiContainer.bounds = CGRectMake(0, 0, buttonSize, buttonSize);
+    aiContainer.center = CGPointMake(firstCenterX + slotWidth * aiSlotIndex, audioElement.center.y);
+    aiContainer.transform = audioElement.transform;
+    aiContainer.hidden = audioElement.hidden;
+    aiContainer.alpha = audioElement.alpha;
+    [stackView bringSubviewToFront:aiContainer];
 
     // 更新图标颜色
     UIButton *aiBtn = nil;
@@ -326,6 +322,8 @@ static void hook_audioIconViewDidLoad(id self, SEL _cmd) {
     }
     if (!elementView) return;
 
+    objc_setAssociatedObject(elementView, &kAWECAAudioElementViewKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
     elementView.userInteractionEnabled = YES;
     UILongPressGestureRecognizer *lp = [[UILongPressGestureRecognizer alloc]
                                          initWithTarget:elementView
@@ -333,15 +331,16 @@ static void hook_audioIconViewDidLoad(id self, SEL _cmd) {
     lp.minimumPressDuration = 0.5;
     [elementView addGestureRecognizer:lp];
 
-    UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(elementView.bounds.size.width - 8, 2, 6, 6)];
-    redDot.backgroundColor = [UIColor redColor];
-    redDot.layer.cornerRadius = 3;
-    redDot.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    redDot.hidden = ![AWECAAudioReplacer shared].enabled;
-    redDot.tag = 19527;
-    [elementView addSubview:redDot];
+    if (![elementView viewWithTag:19527]) {
+        UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(elementView.bounds.size.width - 8, 2, 6, 6)];
+        redDot.backgroundColor = [UIColor redColor];
+        redDot.layer.cornerRadius = 3;
+        redDot.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        redDot.hidden = ![AWECAAudioReplacer shared].enabled;
+        redDot.tag = 19527;
+        [elementView addSubview:redDot];
+    }
 
-    // AI 使用覆盖层，不作为 AWEElementStackView 的布局元素。
     UIView *stackView = elementView.superview;
     if (!stackView) return;
     if (objc_getAssociatedObject(stackView, &kAWECAAIContainerKey)) return;
@@ -442,10 +441,15 @@ static void setupTrailingIconElementHooks(void) {
 
 static void (*orig_stackViewLayoutSubviews)(id self, SEL _cmd);
 static void hook_stackViewLayoutSubviews(id self, SEL _cmd) {
-    orig_stackViewLayoutSubviews(self, _cmd);
-    
     UIView *sv = (UIView *)self;
-    if (objc_getAssociatedObject(sv, &kAWECAAIContainerKey)) {
+    UIView *aiContainer = objc_getAssociatedObject(sv, &kAWECAAIContainerKey);
+    if (aiContainer && aiContainer.superview == sv) {
+        [aiContainer removeFromSuperview];
+    }
+
+    orig_stackViewLayoutSubviews(self, _cmd);
+
+    if (aiContainer) {
         aweca_updateAIButtonPosition(sv);
     }
 }

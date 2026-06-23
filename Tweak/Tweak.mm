@@ -17,6 +17,7 @@ static void setupAudioInputElementHook(void);
 static void setupTrailingIconElementHooks(void);
 static void setupStackViewLayoutHook(void);
 static char kAWECAAIContainerKey;
+static char kAWECAAudioElementViewKey;
 static char kAWECAPoiElementViewKey;
 static char kAWECAPlusElementViewKey;
 
@@ -45,10 +46,10 @@ static char kAWECAPlusElementViewKey;
 
 __asm__(".linker_option \"-framework\", \"CydiaSubstrate\"");
 
-@class AWECommentAudioRecorderController; @class AWECommentLongPressPanelAdaptar; @class AWECommentAudioPlayerManager; @class AWECommentAudioUploadManager;
+@class AWECommentLongPressPanelAdaptar; @class AWECommentAudioRecorderController; @class AWECommentAudioPlayerManager; @class AWECommentAudioUploadManager;
 static void (*_logos_orig$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, id, BOOL, id); static void _logos_method$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, id, BOOL, id); static void (*_logos_orig$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, NSString *); static void _logos_method$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST, SEL, NSString *); static void (*_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double, id); static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double, id); static void (*_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double); static void _logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioPlayerManager* _LOGOS_SELF_CONST, SEL, id, double); static void (*_logos_orig$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentLongPressPanelAdaptar* _LOGOS_SELF_CONST, SEL, id, id, id, id); static void _logos_method$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$(_LOGOS_SELF_TYPE_NORMAL AWECommentLongPressPanelAdaptar* _LOGOS_SELF_CONST, SEL, id, id, id, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id); static void (*_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$)(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id, id); static void _logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioUploadManager* _LOGOS_SELF_CONST, SEL, id, id, id);
 
-#line 24 "Tweak/Tweak.x"
+#line 25 "Tweak/Tweak.x"
 
 
 static void _logos_method$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$(_LOGOS_SELF_TYPE_NORMAL AWECommentAudioRecorderController* _LOGOS_SELF_CONST __unused self, SEL __unused _cmd, id recorder, BOOL success, id error) {
@@ -229,6 +230,10 @@ static void aweca_aiButtonTappedIMP(id self, SEL _cmd) {
     [vc presentViewController:nav animated:YES completion:nil];
 }
 
+static BOOL aweca_isAudioElementView(UIView *element) {
+    return objc_getAssociatedObject(element, &kAWECAAudioElementViewKey) != nil || [element viewWithTag:19527] != nil;
+}
+
 
 static void aweca_updateAIButtonPosition(UIView *stackView) {
     UIView *aiContainer = objc_getAssociatedObject(stackView, &kAWECAAIContainerKey);
@@ -237,30 +242,25 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
     Class evClass = NSClassFromString(@"AWEBaseElementView");
     if (!evClass) return;
 
-    UIView *overlayHost = stackView.superview;
-    if (!overlayHost) {
-        aiContainer.hidden = YES;
-        return;
-    }
-    if (aiContainer.superview != overlayHost) {
+    if (aiContainer.superview != stackView) {
         [aiContainer removeFromSuperview];
-        [overlayHost addSubview:aiContainer];
+        [stackView addSubview:aiContainer];
     }
 
     NSMutableArray<UIView *> *elements = [NSMutableArray array];
     for (UIView *sub in stackView.subviews) {
         if (![sub isKindOfClass:evClass]) continue;
-        if (sub.hidden || sub.alpha < 0.01 || CGRectIsEmpty(sub.frame)) continue;
+        if (sub.hidden || CGRectIsEmpty(sub.bounds)) continue;
         [elements addObject:sub];
     }
     [elements sortUsingComparator:^NSComparisonResult(UIView *left, UIView *right) {
-        if (CGRectGetMinX(left.frame) < CGRectGetMinX(right.frame)) return NSOrderedAscending;
-        if (CGRectGetMinX(left.frame) > CGRectGetMinX(right.frame)) return NSOrderedDescending;
+        if (left.center.x < right.center.x) return NSOrderedAscending;
+        if (left.center.x > right.center.x) return NSOrderedDescending;
         return NSOrderedSame;
     }];
 
     NSUInteger audioIndex = [elements indexOfObjectPassingTest:^BOOL(UIView *element, NSUInteger idx, BOOL *stop) {
-        return [element viewWithTag:19527] != nil;
+        return aweca_isAudioElementView(element);
     }];
     if (audioIndex == NSNotFound) {
         aiContainer.hidden = YES;
@@ -298,8 +298,8 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
         [orderedElements insertObject:poiElement atIndex:trailingInsertIndex];
     }
 
-    CGFloat firstCenterX = CGRectGetMidX(elements.firstObject.frame);
-    CGFloat lastCenterX = CGRectGetMidX(elements.lastObject.frame);
+    CGFloat firstCenterX = elements.firstObject.center.x;
+    CGFloat lastCenterX = elements.lastObject.center.x;
     NSUInteger totalSlotCount = orderedElements.count + 1;
     if (totalSlotCount < 2 || lastCenterX <= firstCenterX) {
         aiContainer.hidden = YES;
@@ -312,22 +312,18 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
     for (NSUInteger index = 0; index < orderedElements.count; index++) {
         UIView *element = orderedElements[index];
         NSUInteger slotIndex = index < aiSlotIndex ? index : index + 1;
-        CGRect frame = element.frame;
-        frame.origin.x = firstCenterX + slotWidth * slotIndex - CGRectGetWidth(frame) * 0.5;
-        element.frame = frame;
+        CGPoint center = element.center;
+        center.x = firstCenterX + slotWidth * slotIndex;
+        element.center = center;
     }
 
     CGFloat buttonSize = 24.0;
-    CGRect aiFrameInStack = CGRectMake(
-        firstCenterX + slotWidth * aiSlotIndex - buttonSize * 0.5,
-        CGRectGetMidY(audioElement.frame) - buttonSize * 0.5,
-        buttonSize,
-        buttonSize
-    );
-    aiContainer.frame = [stackView convertRect:aiFrameInStack toView:overlayHost];
-    aiContainer.hidden = NO;
-    aiContainer.alpha = 1.0;
-    [overlayHost bringSubviewToFront:aiContainer];
+    aiContainer.bounds = CGRectMake(0, 0, buttonSize, buttonSize);
+    aiContainer.center = CGPointMake(firstCenterX + slotWidth * aiSlotIndex, audioElement.center.y);
+    aiContainer.transform = audioElement.transform;
+    aiContainer.hidden = audioElement.hidden;
+    aiContainer.alpha = audioElement.alpha;
+    [stackView bringSubviewToFront:aiContainer];
 
 
     UIButton *aiBtn = nil;
@@ -354,6 +350,8 @@ static void hook_audioIconViewDidLoad(id self, SEL _cmd) {
     }
     if (!elementView) return;
 
+    objc_setAssociatedObject(elementView, &kAWECAAudioElementViewKey, @YES, OBJC_ASSOCIATION_RETAIN_NONATOMIC);
+
     elementView.userInteractionEnabled = YES;
     UILongPressGestureRecognizer *lp = [[UILongPressGestureRecognizer alloc]
                                          initWithTarget:elementView
@@ -361,14 +359,15 @@ static void hook_audioIconViewDidLoad(id self, SEL _cmd) {
     lp.minimumPressDuration = 0.5;
     [elementView addGestureRecognizer:lp];
 
-    UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(elementView.bounds.size.width - 8, 2, 6, 6)];
-    redDot.backgroundColor = [UIColor redColor];
-    redDot.layer.cornerRadius = 3;
-    redDot.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
-    redDot.hidden = ![AWECAAudioReplacer shared].enabled;
-    redDot.tag = 19527;
-    [elementView addSubview:redDot];
-
+    if (![elementView viewWithTag:19527]) {
+        UIView *redDot = [[UIView alloc] initWithFrame:CGRectMake(elementView.bounds.size.width - 8, 2, 6, 6)];
+        redDot.backgroundColor = [UIColor redColor];
+        redDot.layer.cornerRadius = 3;
+        redDot.autoresizingMask = UIViewAutoresizingFlexibleLeftMargin;
+        redDot.hidden = ![AWECAAudioReplacer shared].enabled;
+        redDot.tag = 19527;
+        [elementView addSubview:redDot];
+    }
 
     UIView *stackView = elementView.superview;
     if (!stackView) return;
@@ -470,10 +469,15 @@ static void setupTrailingIconElementHooks(void) {
 
 static void (*orig_stackViewLayoutSubviews)(id self, SEL _cmd);
 static void hook_stackViewLayoutSubviews(id self, SEL _cmd) {
+    UIView *sv = (UIView *)self;
+    UIView *aiContainer = objc_getAssociatedObject(sv, &kAWECAAIContainerKey);
+    if (aiContainer && aiContainer.superview == sv) {
+        [aiContainer removeFromSuperview];
+    }
+
     orig_stackViewLayoutSubviews(self, _cmd);
 
-    UIView *sv = (UIView *)self;
-    if (objc_getAssociatedObject(sv, &kAWECAAIContainerKey)) {
+    if (aiContainer) {
         aweca_updateAIButtonPosition(sv);
     }
 }
@@ -491,7 +495,7 @@ static void setupStackViewLayoutHook(void) {
 
 
 
-static __attribute__((constructor)) void _logosLocalCtor_30ebfd71(int __unused argc, char __unused **argv, char __unused **envp) {
+static __attribute__((constructor)) void _logosLocalCtor_b5bc3288(int __unused argc, char __unused **argv, char __unused **envp) {
     @autoreleasepool {
         [AWECAUtils ensureDirectoriesExist];
 
@@ -506,4 +510,4 @@ static __attribute__((constructor)) void _logosLocalCtor_30ebfd71(int __unused a
 }
 static __attribute__((constructor)) void _logosLocalInit() {
 {Class _logos_class$_ungrouped$AWECommentAudioRecorderController = objc_getClass("AWECommentAudioRecorderController"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioRecorderController, @selector(audioRecorderDidFinishRecording:success:error:), (IMP)&_logos_method$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioRecorderController$audioRecorderDidFinishRecording$success$error$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioRecorderController, @selector(setAudioFilePath:), (IMP)&_logos_method$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioRecorderController$setAudioFilePath$);}Class _logos_class$_ungrouped$AWECommentAudioPlayerManager = objc_getClass("AWECommentAudioPlayerManager"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioPlayerManager, @selector(playAudioWithVideoModel:startTime:audioEffectExternInfo:), (IMP)&_logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$audioEffectExternInfo$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioPlayerManager, @selector(playAudioWithVideoModel:startTime:), (IMP)&_logos_method$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioPlayerManager$playAudioWithVideoModel$startTime$);}Class _logos_class$_ungrouped$AWECommentLongPressPanelAdaptar = objc_getClass("AWECommentLongPressPanelAdaptar"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentLongPressPanelAdaptar, @selector(showLongPressPanelWithParam:config:showSheetCompletion:dismissSheetCompletion:), (IMP)&_logos_method$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$, (IMP*)&_logos_orig$_ungrouped$AWECommentLongPressPanelAdaptar$showLongPressPanelWithParam$config$showSheetCompletion$dismissSheetCompletion$);}Class _logos_class$_ungrouped$AWECommentAudioUploadManager = objc_getClass("AWECommentAudioUploadManager"); { MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioUploadManager, @selector(startUploadAudioWithFilePath:), (IMP)&_logos_method$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioUploadManager$startUploadAudioWithFilePath$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioUploadManager, @selector(uploadAudioWithFilePath:completion:), (IMP)&_logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$completion$);}{ MSHookMessageEx(_logos_class$_ungrouped$AWECommentAudioUploadManager, @selector(uploadAudioWithFilePath:authCompletion:completion:), (IMP)&_logos_method$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$, (IMP*)&_logos_orig$_ungrouped$AWECommentAudioUploadManager$uploadAudioWithFilePath$authCompletion$completion$);}} }
-#line 479 "Tweak/Tweak.x"
+#line 483 "Tweak/Tweak.x"
