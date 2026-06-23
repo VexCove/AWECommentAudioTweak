@@ -206,6 +206,63 @@ static BOOL aweca_isAudioElementView(UIView *element) {
     return objc_getAssociatedObject(element, &kAWECAAudioElementViewKey) != nil || [element viewWithTag:19527] != nil;
 }
 
+static NSHashTable<UIView *> *aweca_aiStackViews(void) {
+    static NSHashTable<UIView *> *stackViews;
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        stackViews = [NSHashTable weakObjectsHashTable];
+    });
+    return stackViews;
+}
+
+static BOOL aweca_stackViewIsOnscreen(UIView *stackView, UIWindow *window) {
+    if (!stackView || stackView.window != window || CGRectIsEmpty(stackView.bounds)) return NO;
+    for (UIView *view = stackView; view && view != window; view = view.superview) {
+        if (view.hidden) return NO;
+    }
+    CGRect frameInWindow = [stackView convertRect:stackView.bounds toView:window];
+    return !CGRectIsEmpty(frameInWindow) && CGRectIntersectsRect(window.bounds, frameInWindow);
+}
+
+static UIView *aweca_activeAIStackView(UIWindow *window, Class elementViewClass) {
+    UIView *bestStackView = nil;
+    NSInteger bestVisibleElementCount = -1;
+    CGFloat bestMaxY = -CGFLOAT_MAX;
+
+    for (UIView *candidate in aweca_aiStackViews()) {
+        if (!aweca_stackViewIsOnscreen(candidate, window)) continue;
+
+        BOOL hasAudioElement = NO;
+        NSInteger visibleElementCount = 0;
+        for (UIView *subview in candidate.subviews) {
+            if (![subview isKindOfClass:elementViewClass] || subview.hidden || CGRectIsEmpty(subview.bounds)) continue;
+            if (aweca_isAudioElementView(subview)) hasAudioElement = YES;
+            if (subview.alpha > 0.01) visibleElementCount++;
+        }
+        if (!hasAudioElement) continue;
+
+        CGRect frameInWindow = [candidate convertRect:candidate.bounds toView:window];
+        CGFloat maxY = CGRectGetMaxY(frameInWindow);
+        if (visibleElementCount > bestVisibleElementCount ||
+            (visibleElementCount == bestVisibleElementCount && maxY > bestMaxY)) {
+            bestStackView = candidate;
+            bestVisibleElementCount = visibleElementCount;
+            bestMaxY = maxY;
+        }
+    }
+    return bestStackView;
+}
+
+static void aweca_hideInactiveAIContainers(UIView *activeStackView, UIWindow *window) {
+    for (UIView *candidate in aweca_aiStackViews()) {
+        if (candidate == activeStackView || candidate.window != window) continue;
+        UIView *container = objc_getAssociatedObject(candidate, &kAWECAAIContainerKey);
+        container.hidden = YES;
+        container.alpha = 0.0;
+        [container removeFromSuperview];
+    }
+}
+
 // AI 按钮挂回 stackView 以跟随原生动画；layout 前会临时移除，避免被原生布局计入按钮数量。
 static void aweca_updateAIButtonPosition(UIView *stackView) {
     UIView *aiContainer = objc_getAssociatedObject(stackView, &kAWECAAIContainerKey);
@@ -213,6 +270,17 @@ static void aweca_updateAIButtonPosition(UIView *stackView) {
 
     Class evClass = NSClassFromString(@"AWEBaseElementView");
     if (!evClass) return;
+
+    UIWindow *window = stackView.window;
+    UIView *activeStackView = window ? aweca_activeAIStackView(window, evClass) : nil;
+    if (activeStackView != stackView) {
+        aiContainer.hidden = YES;
+        aiContainer.alpha = 0.0;
+        [aiContainer removeFromSuperview];
+        if (activeStackView) [activeStackView setNeedsLayout];
+        return;
+    }
+    aweca_hideInactiveAIContainers(stackView, window);
 
     if (aiContainer.superview != stackView) {
         [aiContainer removeFromSuperview];
@@ -343,6 +411,7 @@ static void hook_audioIconViewDidLoad(id self, SEL _cmd) {
 
     UIView *stackView = elementView.superview;
     if (!stackView) return;
+    [aweca_aiStackViews() addObject:stackView];
     if (objc_getAssociatedObject(stackView, &kAWECAAIContainerKey)) return;
 
     UIView *aiContainer = [[UIView alloc] initWithFrame:CGRectZero];
