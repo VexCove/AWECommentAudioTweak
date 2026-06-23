@@ -9,7 +9,7 @@ source_deb_glob=${SOURCE_DEB_GLOB:-packages/*arm64e*.deb}
 fallback_deb_glob=${FALLBACK_DEB_GLOB:-packages/*roothide*.deb}
 output_dir=${OUTPUT_DIR:-packages}
 tweak_dylib_name=${TWEAK_DYLIB_NAME:-AWECommentAudioTweak.dylib}
-output_dylib_name=${OUTPUT_DYLIB_NAME:-${package_id}_${package_version}.dylib}
+output_dylib_name=${OUTPUT_DYLIB_NAME:-AWECommentAudioTweak_${package_version}.dylib}
 required_arch=${REQUIRED_ARCH:-arm64e}
 
 if [[ -z "$package_id" || -z "$package_version" ]]; then

@@ -176,7 +176,7 @@ jobs:
             packages/com.cookieodd.awecommentaudiotweak_${RELEASE_VERSION}_iphoneos-arm-rootful.deb
             packages/com.cookieodd.awecommentaudiotweak_${RELEASE_VERSION}_iphoneos-arm64-rootless.deb
             packages/com.cookieodd.awecommentaudiotweak_${RELEASE_VERSION}_iphoneos-arm64e-roothide.deb
-            packages/com.cookieodd.awecommentaudiotweak_${RELEASE_VERSION}.dylib
+            packages/AWECommentAudioTweak_${RELEASE_VERSION}.dylib
           )
           for expected in "${expected_files[@]}"; do
             if [ ! -f "$expected" ]; then
