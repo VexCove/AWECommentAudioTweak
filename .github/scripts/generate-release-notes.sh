@@ -21,8 +21,11 @@ chore_file=$(mktemp)
 revert_file=$(mktemp)
 records_file=$(mktemp)
 skip_file=$(mktemp)
+net_paths_file=$(mktemp)
+net_diff_lines_file=$(mktemp)
+entries_file=$(mktemp)
 contributors_file=$(mktemp)
-trap 'rm -f "$feat_file" "$fix_file" "$perf_file" "$refactor_file" "$docs_file" "$style_file" "$chore_file" "$revert_file" "$records_file" "$skip_file" "$contributors_file"' EXIT
+trap 'rm -f "$feat_file" "$fix_file" "$perf_file" "$refactor_file" "$docs_file" "$style_file" "$chore_file" "$revert_file" "$records_file" "$skip_file" "$net_paths_file" "$net_diff_lines_file" "$entries_file" "$contributors_file"' EXIT
 
 trim_text() {
     local value=$1
@@ -258,6 +261,200 @@ section_file_for_type() {
     esac
 }
 
+write_net_build_paths() {
+    local before=$1
+    local after=$2
+    local path
+    local makefile_changed=false
+
+    while IFS= read -r path; do
+        [[ -n "$path" ]] || continue
+
+        if is_direct_build_path "$path"; then
+            printf '%s\n' "$path"
+            continue
+        fi
+
+        if [[ "$path" == "Makefile" ]]; then
+            makefile_changed=true
+        fi
+    done < <(git diff --name-only "$before" "$after")
+
+    if [[ "$makefile_changed" == true ]] &&
+       makefile_affects_build "$before" "$after"; then
+        printf 'Makefile\n'
+    fi
+}
+
+commit_intersects_net_build_paths() {
+    local hash=$1
+    local path
+
+    if [[ ! -s "$net_paths_file" ]]; then
+        return 1
+    fi
+
+    while IFS= read -r path; do
+        [[ -n "$path" ]] || continue
+
+        if grep -Fxq -- "$path" "$net_paths_file"; then
+            return 0
+        fi
+    done < <(git diff-tree --root --no-commit-id --name-only -r "$hash")
+
+    return 1
+}
+
+write_diff_signal_lines() {
+    local before=$1
+    local after=$2
+
+    git diff --unified=0 --no-ext-diff "$before" "$after" |
+        awk '
+            function diff_path(line) {
+                sub(/^[+-]{3}[[:space:]]+/, "", line)
+                sub(/^[ab]\//, "", line)
+                return line
+            }
+
+            /^diff --git / { next }
+            /^index / { next }
+            /^new file mode / { next }
+            /^deleted file mode / { next }
+            /^old mode / { next }
+            /^new mode / { next }
+            /^--- / {
+                old_path = diff_path($0)
+                next
+            }
+            /^\+\+\+ / {
+                new_path = diff_path($0)
+                next
+            }
+            /^@@ / { next }
+            /^[+-]/ {
+                prefix = substr($0, 1, 1)
+                line = substr($0, 2)
+                gsub(/^[[:space:]]+|[[:space:]]+$/, "", line)
+                if (line == "" || line ~ /^[{}()[\];,]+$/) next
+                path = prefix == "+" ? new_path : old_path
+                print prefix path "\t" line
+            }
+        '
+}
+
+commit_overlaps_net_diff() {
+    local hash=$1
+    local parent
+    local signal_file
+    local line
+    local matched=false
+
+    parent=$(git rev-parse "${hash}^" 2>/dev/null || git hash-object -t tree /dev/null)
+    signal_file=$(mktemp)
+    write_diff_signal_lines "$parent" "$hash" > "$signal_file"
+
+    if [[ ! -s "$signal_file" ]]; then
+        rm -f "$signal_file"
+        return 0
+    fi
+
+    while IFS= read -r line; do
+        [[ -n "$line" ]] || continue
+        if grep -Fxq -- "$line" "$net_diff_lines_file"; then
+            matched=true
+            break
+        fi
+    done < "$signal_file"
+
+    rm -f "$signal_file"
+    [[ "$matched" == true ]]
+}
+
+feature_group_key() {
+    local hash=$1
+    local title=$2
+    local subject=$3
+    local combined
+    local normalized
+
+    combined="${title} ${subject}"
+    case "$combined" in
+        *快捷倍速*|*长按倍速*|*倍速设置*)
+            printf 'feature:quick-speed'
+            return
+            ;;
+        *AI*图标*|*AI*按钮*|*ai*图标*|*ai*按钮*)
+            printf 'feature:ai-icon'
+            return
+            ;;
+        *评论栏*加号*|*加号*定位按钮*|*定位按钮*|*POI*按钮*|*poi*按钮*)
+            printf 'feature:comment-toolbar-layout'
+            return
+            ;;
+        *语音试听*|*试听*后端*|*试听报错*)
+            printf 'feature:voice-preview'
+            return
+            ;;
+        *沙盒文件*|*文件管理*)
+            printf 'feature:file-manager'
+            return
+            ;;
+        *语音替换*|*替换互斥*|*设置替换*)
+            printf 'feature:audio-replace'
+            return
+            ;;
+        *发布日志*|*更新日志*|*Release*日志*|*release*日志*)
+            printf 'feature:release-notes'
+            return
+            ;;
+        *自动打包*|*打包工作流*|*Build*deb*|*build*deb*)
+            printf 'feature:package-workflow'
+            return
+            ;;
+        *dylib*|*Dylib*)
+            printf 'feature:dylib-artifact'
+            return
+            ;;
+        *版本号*|*版本更新*)
+            printf 'feature:version'
+            return
+            ;;
+    esac
+
+    normalized=$(printf '%s' "$title" |
+        sed -E 's/^(新增|修正|优化|整理|更新|规范|回滚|调整)//')
+    normalized=$(printf '%s' "$normalized" |
+        sed -E 's/(的问题|问题|异常|逻辑|代码|配置|功能|设置|选项|状态)$//')
+    normalized=$(printf '%s' "$normalized" |
+        tr -d '[:space:]' |
+        sed -E 's/[[:punct:]，。；：“”"'\''（）()、]//g')
+
+    if [[ ${#normalized} -ge 6 ]]; then
+        printf 'title:%s' "$normalized"
+        return
+    fi
+
+    printf 'commit:%s' "$hash"
+}
+
+feature_group_label() {
+    local group_key=$1
+
+    case "$group_key" in
+        feature:quick-speed) printf '快捷倍速' ;;
+        feature:ai-icon) printf 'AI 图标' ;;
+        feature:comment-toolbar-layout) printf '评论栏按钮布局' ;;
+        feature:voice-preview) printf '语音试听' ;;
+        feature:file-manager) printf '沙盒文件管理' ;;
+        feature:audio-replace) printf '语音替换' ;;
+        feature:release-notes) printf '发布日志' ;;
+        feature:package-workflow) printf '自动打包工作流' ;;
+        feature:dylib-artifact) printf 'dylib 发布产物' ;;
+        feature:version) printf '版本号' ;;
+    esac
+}
+
 reverted_commit_hash() {
     local hash=$1
     local target_hash
@@ -452,6 +649,91 @@ record_contributor_for_commit() {
     fi
 }
 
+write_grouped_entries() {
+    awk -F $'\t' -v server_url="$server_url" -v repository="$repository" '
+        function type_rank(type) {
+            if (type == "feat") return 1
+            if (type == "fix") return 2
+            if (type == "perf") return 3
+            if (type == "refactor") return 4
+            if (type == "docs") return 5
+            if (type == "style") return 6
+            if (type == "chore") return 7
+            if (type == "revert") return 8
+            return 9
+        }
+
+        function has_type(key, type) {
+            return index("\034" types[key] "\034", "\034" type "\034") > 0
+        }
+
+        function add_type(key, type) {
+            if (!has_type(key, type)) {
+                types[key] = types[key] (types[key] == "" ? "" : "\034") type
+            }
+        }
+
+        function commit_link(hash) {
+            return "[`" substr(hash, 1, 8) "`](" server_url "/" repository "/commit/" hash ")"
+        }
+
+        function grouped_title(type, label) {
+            if (type == "feat") return "新增" label "相关功能"
+            if (type == "fix") return "修正" label "相关问题"
+            if (type == "perf") return "优化" label "相关性能"
+            if (type == "refactor") return "整理" label "相关代码"
+            if (type == "docs") return "更新" label "相关说明"
+            if (type == "style") return "规范" label "相关格式"
+            if (type == "revert") return "回滚" label "相关改动"
+            return "调整" label "相关改动"
+        }
+
+        NF >= 5 {
+            key = $1
+            title = $2
+            type = $3
+            hash = $4
+            label = $5
+
+            if (!(key in seen)) {
+                seen[key] = 1
+                order[++count] = key
+                primary_type[key] = type
+                title_for[key] = title
+                label_for[key] = label
+            } else if (type_rank(type) < type_rank(primary_type[key])) {
+                primary_type[key] = type
+                title_for[key] = title
+            }
+
+            item_count[key]++
+            add_type(key, type)
+            links[key] = links[key] (links[key] == "" ? "" : ", ") commit_link(hash)
+        }
+
+        END {
+            for (i = 1; i <= count; i++) {
+                key = order[i]
+                type_count = split(types[key], type_parts, "\034")
+                tags = ""
+                for (j = 1; j <= type_count; j++) {
+                    if (type_parts[j] == "") continue
+                    tags = tags (tags == "" ? "" : " ") "`" type_parts[j] "`"
+                }
+                title = title_for[key]
+                if (item_count[key] > 1 && label_for[key] != "") {
+                    title = grouped_title(primary_type[key], label_for[key])
+                }
+                print primary_type[key] "\t- " tags " **" title "** (" links[key] ")"
+            }
+        }
+    ' "$entries_file" |
+        while IFS=$'\t' read -r primary_type entry; do
+            [[ -n "$primary_type" && -n "$entry" ]] || continue
+            printf '%s\n' "$entry" >> "$(section_file_for_type "$primary_type")"
+        done
+}
+
 previous_tag=$(latest_release_tag)
 if [[ -n "$previous_tag" ]] &&
    ! ensure_release_tag_available "$previous_tag"; then
@@ -469,22 +751,32 @@ fi
 
 if [[ -n "$previous_tag" ]]; then
     commit_range="${previous_tag}..${head_sha}"
+    release_base_ref="$previous_tag"
 elif [[ -n "${PUSH_BEFORE:-}" && "$PUSH_BEFORE" != "$zero_sha" ]] &&
      git cat-file -e "${PUSH_BEFORE}^{commit}" 2>/dev/null; then
     commit_range="${PUSH_BEFORE}..${head_sha}"
+    release_base_ref="$PUSH_BEFORE"
 else
     if git rev-parse "${head_sha}^" >/dev/null 2>&1; then
-        commit_range="${head_sha}^..${head_sha}"
+        release_base_ref="${head_sha}^"
+        commit_range="${release_base_ref}..${head_sha}"
     else
+        release_base_ref=$(git hash-object -t tree /dev/null)
         commit_range="$head_sha"
     fi
 fi
+
+write_net_build_paths "$release_base_ref" "$head_sha" > "$net_paths_file"
+write_diff_signal_lines "$release_base_ref" "$head_sha" > "$net_diff_lines_file"
 
 while IFS=$'\t' read -r hash subject; do
     [[ -n "$hash" ]] || continue
 
     parent_count=$(git rev-list --parents -n 1 "$hash" | awk '{ print NF - 1 }')
-    if (( parent_count > 1 )) || ! commit_affects_build "$hash"; then
+    if (( parent_count > 1 )) ||
+       ! commit_affects_build "$hash" ||
+       ! commit_intersects_net_build_paths "$hash" ||
+       ! commit_overlaps_net_diff "$hash"; then
         continue
     fi
 
@@ -503,12 +795,18 @@ while IFS=$'\t' read -r hash subject commit_type; do
     fi
 
     relevant_count=$((relevant_count + 1))
-    short_hash=${hash:0:8}
     summary_title=$(summarize_commit_title "$hash" "$subject" "$commit_type")
-    entry="- \`${commit_type}\` **${summary_title}** ([\`${short_hash}\`](${server_url}/${repository}/commit/${hash}))"
-    printf '%s\n' "$entry" >> "$(section_file_for_type "$commit_type")"
+    summary_title=${summary_title//$'\t'/ }
+    feature_key=$(feature_group_key "$hash" "$summary_title" "$subject")
+    feature_key=${feature_key//$'\t'/ }
+    group_label=$(feature_group_label "$feature_key")
+    group_label=${group_label//$'\t'/ }
+    group_key="${commit_type}:${feature_key}"
+    printf '%s\t%s\t%s\t%s\t%s\n' "$group_key" "$summary_title" "$commit_type" "$hash" "$group_label" >> "$entries_file"
     record_contributor_for_commit "$hash"
 done < "$records_file"
+
+write_grouped_entries
 
 cat > "$notes_file" <<EOF
 ## ${release_title} 更新日志
